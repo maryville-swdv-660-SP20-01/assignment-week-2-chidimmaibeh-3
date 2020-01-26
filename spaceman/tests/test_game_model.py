@@ -155,18 +155,51 @@ class GameModelTests( TestCase ):
         self.assertEquals( game.letters_guessed, expectedLettersGuessed )
 
     ### is_game_over field
-    # TODO: add tests
-    # HINT: considering adding a fixture or other widely scoped variables if you feel ]hat will
-    #  make this easier
-
-    def test_is_game_over_is_false_if_guesses_left( self ):
-        pass
+  
+  def test_is_game_over_is_false_if_guesses_left( self ):
+        expectedGameOverStatus = False
+        game = Game(
+            word='TESTWORD',
+            guessed_word_state=['', '', 'S', '', 'W', 'O', 'R', ''],
+            letters_guessed=['S', 'A', 'W', 'O', 'R', 'C' ,'X', 'Z'],
+            guesses_allowed=5,
+            guesses_taken=4
+        )
+        game.handleGuess('T')
+        self.assertEquals(expectedGameOverStatus, game.is_game_over)
 
     def test_is_game_over_is_false_if_not_all_letters_guessed( self ):
-        pass
+        expectedGameOver = False
+        game = Game(
+            word='TESTWORD',
+            guessed_word_state=['T', 'E', 'S', 'T', 'W', 'O', 'R', ''],
+            letters_guessed=['S', 'A', 'W', 'O', 'R', 'C'],
+            guesses_allowed=5,
+            guesses_taken=2
+        )
+        game.handleGuess('T')
+        self.assertEquals(expectedGameOver, game.is_game_over)
 
     def test_is_game_over_is_true_if_no_guesses_left( self ):
-        pass
+        expectedGameOver = True
+        game = Game(
+            word='TESTWORD',
+            guessed_word_state=['T', 'E', 'S', 'T', 'W', 'O', 'R', ''],
+            letters_guessed=['S', 'A', 'W', 'O', 'R', 'C', 'X', 'Y'],
+            guesses_allowed=5,
+            guesses_taken=4
+        )
+        game.handleGuess('M')
+        self.assertEquals(expectedGameOver, game.is_game_over)
 
     def test_is_game_over_is_true_if_all_letters_guessed( self ):
-        pass
+        expectedGameOver = True
+        game = Game(
+            word='TESTWORD',
+            guessed_word_state=['T', 'E', 'S', 'T', 'W', 'O', 'R', ''],
+            letters_guessed=['S', 'A', 'W', 'O', 'R', 'C', 'T', 'E'],
+            guesses_allowed=5,
+            guesses_taken=2
+        )
+        game.handleGuess('D')
+        self.assertEquals(expectedGameOver, game.is_game_over)
