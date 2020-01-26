@@ -68,8 +68,18 @@ class GameApiViewTests( TestCase ):
             self.assertEquals( response.status_code, 400 )
 
 
-    ### GET solution view
-    # TODO: Add tests for Getting a game's solution
-    # HINT: remember the `setUp` fixture that is in this test class, 
-    #   it constructs things that might be useful
+### GET solution view
 
+    def test_game_view_should_reject_GET_if_invalid(self):
+        response = game_solution(self.request_factory.get('dummy'), -3)
+        self.assertEquals(response.status_code, 404)
+
+    def test_game_view_should_return_on_GET(self):
+        with patch.object(Game.objects, 'get') as mock_get:
+            self.mock_game.letters_available = ['B', 'C']
+            mock_get.return_value = self.mock_game
+            mock_request = self.request_factory.get(self.request_factory.get('dummy'))
+            response = game_solution(mock_request, 25)
+            mock_get.assert_called_with(pk=25)
+            self.assertEquals(response.status_code, 200)
+            self.assertIsNotNone(response.data['solution'])
