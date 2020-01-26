@@ -156,7 +156,7 @@ class GameModelTests( TestCase ):
 
     ### is_game_over field
   
-  def test_is_game_over_is_false_if_guesses_left( self ):
+    def test_is_game_over_is_false_if_guesses_left( self ):
         expectedGameOverStatus = False
         game = Game(
             word='TESTWORD',
